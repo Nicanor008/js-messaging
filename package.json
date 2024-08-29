@@ -26,11 +26,20 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "globals": "^15.9.0",
+    "husky": "^9.1.5",
+    "lint-staged": "^15.2.9",
     "nodemon": "^3.1.4",
     "prettier": "^3.3.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4",
     "typescript-eslint": "^8.3.0"
+  },
+  "lint-staged": {
+    "src/**/*.{js,ts,tsx,json,css,md}": [
+      "yarn format",
+      "yarn lint:fix",
+      "git add"
+    ]
   },
   "repository": "https://github.com/Nicanor008/js-messaging.git"
 }
