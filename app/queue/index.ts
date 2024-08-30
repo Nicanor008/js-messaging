@@ -1,5 +1,5 @@
 export class Queue {
-  items: {};
+  items: any;
   headIndex: number;
   backIndex: number;
   constructor() {
@@ -8,7 +8,7 @@ export class Queue {
     this.backIndex = 0;
   }
   /** Add item to the back of the queue */
-  enqueue(item: any) {
+  enqueue(item: string | number) {
     this.items[this.backIndex] = item;
     this.backIndex++;
   }

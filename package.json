@@ -2,7 +2,7 @@
   "name": "js-messaging",
   "version": "1.0.0",
   "description": "A system like RabbitMQ-client",
-  "main": "app/index.ts",
+  "main": "build/index.js",
   "type": "module",
   "scripts": {
     "dev": "nodemon app/index.ts",
