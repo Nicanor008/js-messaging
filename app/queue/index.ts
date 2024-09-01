@@ -24,6 +24,6 @@ export class Queue {
     return this.items[this.headIndex];
   }
   printQueue() {
-    return this.items;
+    console.log(`items in the queue [${Object.entries(this.items)}]`);
   }
 }
