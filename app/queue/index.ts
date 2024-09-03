@@ -1,12 +1,14 @@
 export class Queue {
-  items: any;
+  items: { [key: string | number]: string | number };
   headIndex: number;
   backIndex: number;
+
   constructor() {
     this.items = {};
     this.headIndex = 0;
     this.backIndex = 0;
   }
+  
   /** Add item to the back of the queue */
   enqueue(item: string | number) {
     this.items[this.backIndex] = item;

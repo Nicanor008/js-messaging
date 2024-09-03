@@ -47,7 +47,9 @@
       "quotes": ["error", "single", { "avoidEscape": true }],
 
       // Ensure consistent line endings
-      "eol-last": ["error", "always"]
+      "eol-last": ["error", "always"],
+
+      "@typescript-eslint/no-explicit-any": "error"
     }
   }
   
