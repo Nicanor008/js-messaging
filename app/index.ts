@@ -7,7 +7,7 @@ import { Consumer } from './consumer';
   const broker = new MessageBroker();
 
   // Step 1: Initialize the queue
-  const queueName = 'projectQueue';
+  const queueName = 'projectQueue'; // TODO: update to the correct project name
   broker.createQueue(queueName);
 
   // Step 2: Create a producer and send messages
