@@ -4,4 +4,4 @@ A system like RabbitMQ-client
 
 ## Diagrams
 ### Execution Flowchart
-![flowchart](./assets/execution-flowchart.png)
+![flowchart](./assets/execution-flowchart.jpg)
