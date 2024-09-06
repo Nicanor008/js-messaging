@@ -25,6 +25,12 @@ export class Queue {
   peek() {
     return this.items[this.headIndex];
   }
+
+  /** Check if the queue is empty */
+  isEmpty(): boolean {
+    return this.backIndex === this.headIndex;
+  }
+  
   printQueue() {
     console.log(`items in the queue [${Object.entries(this.items)}]`);
   }
