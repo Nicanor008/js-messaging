@@ -1,25 +1,28 @@
 import { Queue } from '../queue';
 
-interface Binding {
-  queue: Queue;
-  routingKey: string;
-}
-
 export class Exchange {
-  private bindings: Binding[] = [];
+  private bindings: { [routingKey: string]: Queue[] } = {};
 
   constructor(private name: string, private type: 'direct' | 'topic') {}
 
   bindQueue(queue: Queue, routingKey: string) {
-    this.bindings.push({ queue, routingKey });
+    if (!this.bindings[routingKey]) {
+      this.bindings[routingKey] = [];
+    }
+    this.bindings[routingKey].push(queue);
   }
 
-  route(message: string | number, routingKey: string) {
-    this.bindings.forEach(binding => {
-      if (this.type === 'direct' && binding.routingKey === routingKey) {
-        binding.queue.enqueue(message);
+  route(message: { content: string | number; timestamp: number }, routingKey: string) {
+    if (this.type === 'direct') {
+      const queues = this.bindings[routingKey];
+      if (queues) {
+        for (const queue of queues) {
+          queue.enqueue(message); // Enqueue the message with content and timestamp
+        }
+      } else {
+        console.warn(`No queues bound to routing key "${routingKey}"`);
       }
-      // For topic exchange, implement more complex pattern matching
-    });
+    }
+    // For topic exchange, implement more complex pattern matching
   }
 }

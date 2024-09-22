@@ -2,27 +2,39 @@ import { MessageBroker } from './messageBroker';
 import { Producer } from './producer';
 import { Consumer } from './consumer';
 
-(() => {
-  // Initialize the message broker
-  const broker = new MessageBroker();
+class JSMessaging {
+  private broker: MessageBroker;
 
-  // Step 1: Initialize the queue
-  const queueName = 'projectQueue'; // TODO: update to the correct project name
-  broker.createQueue(queueName);
+  constructor() {
+    // Initialize the message broker
+    this.broker = new MessageBroker();
+  }
 
-  // Step 2: Create a producer and send messages
-  const producer = new Producer(broker);
-  producer.send('Project-specific message 1', queueName);
-  producer.send('Project-specific message 2', queueName);
+  public createProducer(projectName: string) {
+    // Set up everything related to a producer
+    const exchangeName = this.setupProjectExchangeAndQueue(projectName);
+    return new Producer(this.broker, exchangeName, projectName);
+  }
 
-  // Step 3: Initialize a consumer to process the queue
-  const consumer = new Consumer(broker, queueName);
+  public createConsumer(projectName: string) {
+    // Set up everything related to a consumer
+    const queueName = projectName;
+    return new Consumer(this.broker, queueName);
+  }
 
-  // Step 4: Wait and then consume the messages
-  setTimeout(() => {
-    console.log('Consumer is now ready to process messages.');
-    consumer.consume(); // Should process the messages in the queue
-  }, 2000); // Simulate some delay before the consumer is ready
+  private setupProjectExchangeAndQueue(projectName: string): string {
+    // Create the queue and exchange based on project name
+    const queueName = projectName;
+    const exchangeName = `projectExchange-${projectName}`;
+    const routingKey = `projectKey-${projectName}`;
 
-  console.log('Project setup is complete.');
-})();
+    const queue = this.broker.createQueue(queueName);
+    const exchange = this.broker.createExchange(exchangeName, 'direct');
+    exchange.bindQueue(queue, routingKey);
+
+    return exchangeName;
+  }
+}
+
+// Export the JSMessaging as a single entry point
+export const jsMessaging = new JSMessaging();
