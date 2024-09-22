@@ -1,21 +1,25 @@
 import { MessageBroker } from '../messageBroker';
 
 export class Producer {
-  constructor(private broker: MessageBroker) {}
+  private exchangeName: string;
+  private routingKey: string;
 
-  send(message: string | number, queueName: string, routingKey?: string) {
-    const queue = this.broker.getQueue(queueName);
-    if (queue) {
-      if (routingKey) {
-        const exchange = this.broker.getExchange(queueName);
-        if (exchange) {
-          exchange.route(message, routingKey);
-        }
-      } else {
-        queue.enqueue(message);
-      }
+  constructor(private broker: MessageBroker, exchangeName: string, projectName: string) {
+    this.exchangeName = exchangeName;
+    this.routingKey = `projectKey-${projectName}`;
+  }
+
+  send(message: string) {
+    const exchange = this.broker.getExchange(this.exchangeName);
+    if (exchange) {
+      const timestamp = Date.now(); // Capture the time when the message is sent
+      const messageWithTimestamp = {
+        content: message,
+        timestamp, // Attach the timestamp to the message
+      };
+      exchange.route(messageWithTimestamp, this.routingKey);
     } else {
-      console.error(`Queue ${queueName} not initialized!`);
+      console.error(`Exchange "${this.exchangeName}" not initialized!`);
     }
   }
 }
